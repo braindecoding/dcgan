@@ -9,6 +9,8 @@ import PIL
 from tensorflow.keras import layers
 import time
 
+from IPython import display
+
 # In[]: load data mnist
 (train_images, train_labels), (_, _) = tf.keras.datasets.mnist.load_data()
 
@@ -104,12 +106,12 @@ EPOCHS = 50
 noise_dim = 100
 num_examples_to_generate = 16
 
-# You will reuse this seed overtime (so it's easier)
+# In[]: You will reuse this seed overtime (so it's easier)
 # to visualize progress in the animated GIF)
 seed = tf.random.normal([num_examples_to_generate, noise_dim])
 
 
-# Notice the use of `tf.function`
+# In[]: Notice the use of `tf.function`
 # This annotation causes the function to be "compiled".
 @tf.function
 def train_step(images):
@@ -129,7 +131,7 @@ def train_step(images):
 
     generator_optimizer.apply_gradients(zip(gradients_of_generator, generator.trainable_variables))
     discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, discriminator.trainable_variables))
-
+# In[]: 
 def train(dataset, epochs):
   for epoch in range(epochs):
     start = time.time()
@@ -169,11 +171,11 @@ def generate_and_save_images(model, epoch, test_input):
 
   plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
   plt.show()
+# In[]: 
 
+train(train_dataset, EPOCHS)
 
-  train(train_dataset, EPOCHS)
-
-# in[]: restore to latest checkphoin
+# In[]: restore to latest checkphoin
 checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
 
 
